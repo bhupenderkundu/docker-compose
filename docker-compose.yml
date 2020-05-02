@@ -1,0 +1,32 @@
+version: '3.3'
+volumes: 
+    mysql_data:
+    wordpress_data:
+
+services: 
+    database:
+        image: mysql:5.7
+        volumes: 
+            - mysql_data:/var/lib/mysql
+
+        restart: always
+        environment: 
+            MYSQL_ROOT_PASSWORD: centos8
+            MYSQL_DATABASE: mydbs
+            MYSQL_USER: Bhupender
+            MYSQL_PASSWORD: kundu
+
+    wordpress:
+        depends_on: 
+            - database
+
+        image: wordpress:latest
+        volumes: 
+            - wordpress_data:/var/www/html
+        ports: 
+            - "3306:80"
+        restart: always
+        environment: 
+            WORDPRESS_DB_HOST: database:3306
+            WORDPRESS_DB_USER: Bhupender
+            WORDPRESS_DB_PASSWORD: kundu
